@@ -1,0 +1,34 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<script>
+  (function(d,e,id){
+    window.dito={};window._ditoTemp=[];
+    dito.generateID=function(str){return'_dito_sha1_'+str;}
+    var m=['init','identify','alias','unalias','track'],s=d.createElement('script'),
+    x=d.getElementsByTagName(e)[0];s.type='text/javascript';s.async=true;s.id=id;
+    s.src='//storage.googleapis.com/dito/sdk.js';x.parentNode.insertBefore(s,x);
+    for(var i=0;i<m.length;i++){dito[m[i]]=function(i){
+    return function(){_ditoTemp.push({methodName:m[i],params:arguments});}}(i)}
+  })(document,'script','dito-jssdk');
+</script>
+
+<?php if($helper->getDitoEnabled()): ?>
+  <script>
+    dito.init({
+      apiKey: '<?php echo $helper->getApiKey(); ?>',
+      session: true
+    });
+
+    <?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
+    <?php if($customer): ?>
+      dito.identify({
+        id: dito.generateID('<?php echo $customer->getEmail(); ?>'),
+        name: '<?php echo $customer->getName(); ?>',
+        email: '<?php echo $customer->getEmail(); ?>',
+        data: {
+          user_id: '<?php echo $customer->getId(); ?>'
+        }
+      });
+    <?php endif; ?>
+  </script>
+<?php endif; ?>

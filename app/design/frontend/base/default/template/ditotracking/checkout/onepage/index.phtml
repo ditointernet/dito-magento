@@ -1,0 +1,9 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<?php if($helper->getTrackStatus('checkout_onepage_index')): ?>
+  <script type="text/javascript">
+    dito.track({
+      action: 'acessou-checkout'
+    });
+  </script>
+<?php endif; ?>

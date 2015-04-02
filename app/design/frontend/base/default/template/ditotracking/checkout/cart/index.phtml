@@ -1,0 +1,22 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<?php if($helper->getTrackStatus('checkout_cart_index')): ?>
+  <?php $product = Mage::getModel('core/session')->getProductToShoppingCart(); ?>
+
+  <?php if($product): ?>
+    <script type="text/javascript">
+      dito.track({
+        action: 'adicionou-produto-ao-carrinho',
+        data: <?php echo $product; ?>
+      });
+    </script>
+
+    <?php Mage::getModel('core/session')->unsProductToShoppingCart(); ?>
+  <?php endif; ?>
+
+  <script type="text/javascript">
+    dito.track({
+      action: 'acessou-carrinho'
+    });
+  </script>
+<?php endif; ?>

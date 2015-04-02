@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Dito_DitoTracking>
+        <active>true</active>
+        <codePool>community</codePool>
+        </Dito_DitoTracking>
+    </modules>
+</config>

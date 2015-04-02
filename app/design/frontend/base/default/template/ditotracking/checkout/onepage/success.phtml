@@ -1,0 +1,53 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<?php if($helper->getTrackStatus('checkout_onepage_success')): ?>
+  <?php
+    $order = Mage::getModel('sales/order')->load(Mage::getSingleton('checkout/session')->getLastOrderId());
+    $payment = $order->getPayment();
+    $items = $order->getAllItems();
+
+    $ccType = $payment->getCcType();
+    $ccTypes = Mage::getSingleton('payment/config')->getCcTypes();
+
+    if(isset($ccTypes[$ccType])){
+      $ccTypeName = $ccTypes[$ccType];
+    }
+
+    $purchaseData = Array();
+
+    $purchaseData['total'] = floatval($order->getGrandTotal());
+    $purchaseData['subtotal'] = floatval($order->getSubtotal());
+    $purchaseData['imposto_total'] = floatval($order->getTaxAmount());
+    $purchaseData['total_desconto'] = floatval($order->getDiscountAmount());
+    $purchaseData['total_frete'] = floatval($order->getShippingAmount());
+    $purchaseData['tipo_frete'] = floatval($order->getShippingMethod());
+    $purchaseData['imposto_frete'] = floatval($order->getShippingTaxAmount());
+    $purchaseData['quantidade_produtos'] = floatval($order->getTotalQtyOrdered());
+
+    $purchaseData['metodo_pagamento'] = $payment->getMethod();
+    $purchaseData['bandeira_cartao_credito'] = $ccTypeName;
+  ?>
+
+  <script type="text/javascript">
+    dito.track({
+      action: 'comprou',
+      revenue: <?php echo $order->getGrandTotal(); ?>,
+      data: <?php echo json_encode($purchaseData); ?>
+    });
+
+    <?php foreach ($items as $item){ ?>
+      <?php
+        $product = Mage::getModel('catalog/product')->load($item->getProductId());
+        $data = $helper->getProductTrackingObject($product);
+
+        $data['id_compra'] = $order->getIncrementId();
+        $data['quantidade'] = floatval($item->getQtyOrdered());
+      ?>
+
+      dito.track({
+        action: 'comprou-produto',
+        data: <?php echo json_encode($data); ?>
+      });
+    <?php } ?>
+  </script>
+<?php endif; ?>

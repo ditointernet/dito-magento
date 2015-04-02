@@ -1,0 +1,21 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<?php if($helper->getTrackStatus('catalogsearch_advanced_result')): ?>
+  <?php
+    $searchCriterias = Mage::getSingleton('catalogsearch/advanced')->getSearchCriterias();
+
+    $data = Array();
+    $data['tipo_busca'] = 'Avançada';
+
+    foreach($searchCriterias as $criteria){
+      $data[strtolower(str_replace(' ', '_', $criteria['name']))] = $criteria['value'];
+    }
+  ?>
+
+  <script type="text/javascript">
+    dito.track({
+      action: 'buscou-produto',
+      data: <?php echo json_encode($data); ?>
+    });
+  </script>
+<?php endif; ?>

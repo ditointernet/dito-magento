@@ -1,0 +1,14 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<?php if($helper->getTrackStatus('catalogsearch_result')): ?>
+  <?php $query = Mage::helper('catalogSearch')->getQuery(); ?>
+
+  <script type="text/javascript">
+    dito.track({
+      action: 'buscou-produto',
+      data: {
+        termo: '<?php echo $query->getQueryText(); ?>'
+      }
+    });
+  </script>
+<?php endif; ?>

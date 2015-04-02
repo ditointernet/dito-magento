@@ -1,0 +1,9 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<?php if($helper->getTrackStatus('catalogsearch_advanced_index')): ?>
+  <script type="text/javascript">
+    dito.track({
+      action: 'acessou-busca-avancada'
+    });
+  </script>
+<?php endif; ?>

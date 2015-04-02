@@ -1,0 +1,18 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<?php if($helper->getTrackStatus('catalog_category_view')): ?>
+  <?php 
+    $currentCategory = Mage::registry('current_category');
+    $data = Array();
+
+    $data['nome_categoria'] = $currentCategory->getName();
+    $data['url_key'] = $currentCategory->getUrlKey();
+  ?>
+
+  <script type="text/javascript">
+    dito.track({
+      action: 'acessou-categoria',
+      data: <?php echo json_encode($data); ?>
+    });
+  </script>
+<?php endif; ?>
