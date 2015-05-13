@@ -3,7 +3,7 @@
     <modules>
         <Dito_DitoTracking>
         <active>true</active>
-        <codePool>community</codePool>
+        <codePool>local</codePool>
         </Dito_DitoTracking>
     </modules>
 </config>
