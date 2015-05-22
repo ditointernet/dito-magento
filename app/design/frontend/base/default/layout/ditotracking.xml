@@ -56,4 +56,11 @@
       <block type="core/template" name="ditotracking.checkout.success" template="ditotracking/checkout/onepage/success.phtml" />
     </reference>
   </checkout_onepage_success>
+
+  <!-- ONE PAGE CHECKOUT  -->
+  <opc_index_index>
+    <reference name="content">
+      <block type="core/template" name="ditotracking.checkout.index" template="ditotracking/checkout/onepage/index.phtml" />
+    </reference>
+  </opc_index_index>
 </layout>
