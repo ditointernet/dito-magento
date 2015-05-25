@@ -63,4 +63,11 @@
       <block type="core/template" name="ditotracking.checkout.index" template="ditotracking/checkout/onepage/index.phtml" />
     </reference>
   </opc_index_index>
+  
+  <!-- ONE STEP CHECKOUT  -->
+  <onestepcheckout_index_index>
+    <reference name="content">
+      <block type="core/template" name="ditotracking.checkout.index" template="ditotracking/checkout/onepage/index.phtml" />
+    </reference>
+  </onestepcheckout_index_index>
 </layout>
