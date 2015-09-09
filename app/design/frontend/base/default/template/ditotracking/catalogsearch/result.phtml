@@ -7,7 +7,7 @@
     dito.track({
       action: 'buscou-produto',
       data: {
-        termo: '<?php echo $query->getQueryText(); ?>'
+        termo: '<?php echo $this->escapeHtml($query->getQueryText()); ?>'
       }
     });
   </script>
