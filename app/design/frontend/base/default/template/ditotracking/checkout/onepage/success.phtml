@@ -9,10 +9,6 @@
     $ccType = $payment->getCcType();
     $ccTypes = Mage::getSingleton('payment/config')->getCcTypes();
 
-    if(isset($ccTypes[$ccType])){
-      $ccTypeName = $ccTypes[$ccType];
-    }
-
     $purchaseData = Array();
 
     $purchaseData['total'] = floatval($order->getGrandTotal());
@@ -25,7 +21,10 @@
     $purchaseData['quantidade_produtos'] = floatval($order->getTotalQtyOrdered());
 
     $purchaseData['metodo_pagamento'] = $payment->getMethod();
-    $purchaseData['bandeira_cartao_credito'] = $ccTypeName;
+
+    if(isset($ccTypes[$ccType])){
+      $purchaseData['bandeira_cartao_credito'] = $ccTypes[$ccType];
+    }
   ?>
 
   <script type="text/javascript">
