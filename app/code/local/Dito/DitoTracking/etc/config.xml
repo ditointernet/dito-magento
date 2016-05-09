@@ -34,6 +34,16 @@
         </DitoTracking>
       </updates>
     </layout>
+
+    <routers>
+      <ditotracking>
+        <use>standard</use>
+        <args>
+          <module>Dito_DitoTracking</module>
+          <frontName>ditotracking</frontName>
+        </args>
+      </ditotracking>
+    </routers>
   </frontend>
 
   <adminhtml>

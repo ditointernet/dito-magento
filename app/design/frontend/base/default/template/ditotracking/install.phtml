@@ -13,22 +13,34 @@
 </script>
 
 <?php if($helper->getDitoEnabled()): ?>
+  <input type="hidden" id="_dito-root-path" value="<?php echo Mage::getUrl(); ?>">
+
   <script>
     dito.init({
       apiKey: '<?php echo $helper->getApiKey(); ?>',
       session: true
     });
 
-    <?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
-    <?php if(isset($customer) && $customer->getId()): ?>
-      dito.identify({
-        id: dito.generateID('<?php echo $customer->getEmail(); ?>'),
-        name: '<?php echo $customer->getName(); ?>',
-        email: '<?php echo $customer->getEmail(); ?>',
-        data: {
-          user_id: '<?php echo $customer->getId(); ?>'
+    <?php if($helper->getCacheStrategy()): ?>
+      jQuery.get(jQuery('#_dito-root-path').val() + 'ditotracking/index/identify', function(response){
+        try {
+          eval(response);
         }
+        catch(e) {}
       });
+    <?php else: ?>
+      <?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
+
+      <?php if(isset($customer) && $customer->getId()): ?>
+        dito.identify({
+          id: dito.generateID('<?php echo $customer->getEmail(); ?>'),
+          name: '<?php echo $customer->getName(); ?>',
+          email: '<?php echo $customer->getEmail(); ?>',
+          data: {
+            user_id: '<?php echo $customer->getId(); ?>'
+          }
+        });
+      <?php endif; ?>
     <?php endif; ?>
   </script>
 <?php endif; ?>

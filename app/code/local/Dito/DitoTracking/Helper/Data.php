@@ -12,6 +12,10 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
     return Mage::getStoreConfig('ditotracking_options/track_config/' . $key, $store);
   }
 
+  public function getCacheStrategy($store = null){
+    return Mage::getStoreConfig('ditotracking_options/cache_config/cache_strategy', $store);
+  }
+
   public function getProductTrackingObject($product) {
     if(!$product->getId()){
       return;
