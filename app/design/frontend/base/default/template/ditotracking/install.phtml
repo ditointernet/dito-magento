@@ -32,14 +32,7 @@
       <?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
 
       <?php if(isset($customer) && $customer->getId()): ?>
-        dito.identify({
-          id: dito.generateID('<?php echo $customer->getEmail(); ?>'),
-          name: '<?php echo $customer->getName(); ?>',
-          email: '<?php echo $customer->getEmail(); ?>',
-          data: {
-            user_id: '<?php echo $customer->getId(); ?>'
-          }
-        });
+        dito.identify(<?php echo json_encode($helper->getUserIdentifyObject($customer)) ?>);
       <?php endif; ?>
     <?php endif; ?>
   </script>

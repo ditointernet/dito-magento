@@ -12,8 +12,38 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
     return Mage::getStoreConfig('ditotracking_options/track_config/' . $key, $store);
   }
 
+  public function getUserDataConfig($key, $store = null){
+    return Mage::getStoreConfig('ditotracking_options/user_config/' . $key, $store);
+  }
+
   public function getCacheStrategy($store = null){
     return Mage::getStoreConfig('ditotracking_options/cache_config/cache_strategy', $store);
+  }
+
+  public function getUserIdentifyObject($customer){
+    $addresses = $customer->getAddresses();
+    $city = '';
+
+    if(count($addresses) >= 1){
+      $address = reset($addresses);
+      if(isset($address)) $city = $address->getCity();
+    }
+
+    $user = Array(
+      'id' => sha1($customer->getEmail()),
+      'email' => $customer->getEmail(),
+      'name' => $customer->getName(),
+      'birthday' => $customer->getDob(),
+      'gender' => array('', 'male', 'female')[$customer->getGender()],
+      'location' => $city,
+      'data' => array(
+        'user_id' => $customer->getId(),
+        'cpf' => $customer->getData($this->getUserDataConfig('user_config_cpf')),
+        'telefone' => $customer->getData($this->getUserDataConfig('user_config_cellphone')),
+      )
+    );
+
+    return $user;
   }
 
   public function getProductTrackingObject($product) {
