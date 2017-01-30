@@ -27,11 +27,19 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
       $addresses = $customer->getAddresses();
       $city = '';
       $birthday = '';
+      $phoneFromAddress = '';
+      $phoneFromConfig = $customer->getData($this->getUserDataConfig('user_config_cellphone'));
+      $phone = '';
 
       if(count($addresses) >= 1){
         $address = reset($addresses);
-        if(isset($address)) $city = $address->getCity();
+        if(isset($address)){
+          $city = $address->getCity();
+          $phoneFromAddress = $address->getTelephone();
+        }
       }
+
+      $phone = isset($phoneFromConfig) ? $phoneFromConfig : $phoneFromAddress;
 
       if($customer->getDob()){
         $birthday = split(' ', $customer->getDob())[0];
@@ -47,7 +55,7 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
         'data' => array(
           'user_id' => $customer->getId(),
           'cpf' => $customer->getData($this->getUserDataConfig('user_config_cpf')),
-          'telefone' => $customer->getData($this->getUserDataConfig('user_config_cellphone')),
+          'telefone' => $phone
         )
       );
     }
