@@ -1,0 +1,40 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<?php if($helper->getUserDataConfig('user_config_facebook_alias')): ?>
+  <script type="text/javascript">
+    (function(){
+      var facebookInterval = window.setInterval(function(){
+       if(!window.FB) return;
+
+       clearInterval(facebookInterval);
+
+       var i = window.setInterval(function(){
+         if(!(window.dito.identify && window.dito.identify.identifyCallback)) return;
+         clearInterval(i);
+
+         var accessTokenInterval = window.setInterval(function(){
+           var accessToken = FB.getAccessToken();
+           if(!accessToken) return;
+
+           clearInterval(accessTokenInterval);
+
+           if(accessToken){
+             dito.identify.identifyCallback(function(){
+               FB.api("/me", function(response){
+                 if(!response.id) return;
+
+                 dito.alias({
+                   facebook: {
+                     id: response.id,
+                     access_token: accessToken
+                   }
+                 });
+               });
+             });
+           }
+         }, 500);
+       }, 500);
+      }, 500);
+    }());
+  </script>
+<?php endif; ?>

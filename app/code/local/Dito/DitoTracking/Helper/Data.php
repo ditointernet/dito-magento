@@ -12,8 +12,55 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
     return Mage::getStoreConfig('ditotracking_options/track_config/' . $key, $store);
   }
 
+  public function getUserDataConfig($key, $store = null){
+    return Mage::getStoreConfig('ditotracking_options/user_config/' . $key, $store);
+  }
+
   public function getCacheStrategy($store = null){
     return Mage::getStoreConfig('ditotracking_options/cache_config/cache_strategy', $store);
+  }
+
+  public function getUserIdentifyObject($customer){
+    $user = Array();
+
+    if(isset($customer) && $customer->getId()) {
+      $addresses = $customer->getAddresses();
+      $city = '';
+      $birthday = '';
+      $phoneFromAddress = '';
+      $phoneFromConfig = $customer->getData($this->getUserDataConfig('user_config_cellphone'));
+      $phone = '';
+
+      if(count($addresses) >= 1){
+        $address = reset($addresses);
+        if(isset($address)){
+          $city = $address->getCity();
+          $phoneFromAddress = $address->getTelephone();
+        }
+      }
+
+      $phone = isset($phoneFromConfig) ? $phoneFromConfig : $phoneFromAddress;
+
+      if($customer->getDob()){
+        $birthday = split(' ', $customer->getDob())[0];
+      }
+
+      $user = Array(
+        'id' => sha1($customer->getEmail()),
+        'email' => $customer->getEmail(),
+        'name' => $customer->getName(),
+        'birthday' => $birthday,
+        'gender' => array('', 'male', 'female')[$customer->getGender()],
+        'location' => $city,
+        'data' => array(
+          'user_id' => $customer->getId(),
+          'cpf' => $customer->getData($this->getUserDataConfig('user_config_cpf')),
+          'telefone' => $phone
+        )
+      );
+    }
+
+    return $user;
   }
 
   public function getProductTrackingObject($product) {

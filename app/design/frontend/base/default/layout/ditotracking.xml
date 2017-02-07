@@ -5,8 +5,9 @@
     <reference name="header">
       <reference name="top.container">
         <block type="core/template" name="ditotracking.install" template="ditotracking/install.phtml" />
+        <block type="core/template" name="ditotracking.alias" template="ditotracking/alias.phtml" />
       </reference>
-    </reference> 
+    </reference>
   </default>
 
   <catalogsearch_result_index>
@@ -63,7 +64,7 @@
       <block type="core/template" name="ditotracking.checkout.index" template="ditotracking/checkout/onepage/index.phtml" />
     </reference>
   </opc_index_index>
-  
+
   <!-- ONE STEP CHECKOUT  -->
   <onestepcheckout_index_index>
     <reference name="content">
