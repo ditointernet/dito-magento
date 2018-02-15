@@ -40,14 +40,15 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
       }
 
       $phone = isset($phoneFromConfig) ? $phoneFromConfig : $phoneFromAddress;
+      $email = preg_replace('/\s*/', '', strtolower($customer->getEmail());
 
       if($customer->getDob()){
         $birthday = split(' ', $customer->getDob())[0];
       }
 
       $user = Array(
-        'id' => sha1($customer->getEmail()),
-        'email' => $customer->getEmail(),
+        'id' => sha1($email),
+        'email' => $email,
         'name' => $customer->getName(),
         'birthday' => $birthday,
         'gender' => array('', 'male', 'female')[$customer->getGender()],
