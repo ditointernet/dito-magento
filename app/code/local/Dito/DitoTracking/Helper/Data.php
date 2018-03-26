@@ -20,6 +20,14 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
     return Mage::getStoreConfig('ditotracking_options/cache_config/cache_strategy', $store);
   }
 
+  public function getNewsEnabled($store = null){
+    return Mage::getStoreConfig('ditotracking_options/track_newsletter/dito_newsletter_enabled', $store);
+  }
+
+  public function getNewsDataConfig($key, $store = null){
+    return Mage::getStoreConfig('ditotracking_options/track_newsletter/' . $key, $store);
+  }
+
   public function getUserIdentifyObject($customer){
     $user = Array();
 

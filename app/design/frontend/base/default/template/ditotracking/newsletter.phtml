@@ -1,0 +1,42 @@
+<?php $helper = Mage::helper('ditotracking'); ?>
+
+<?php if($helper->getNewsEnabled()): ?>
+  <?php 
+    $nameSelector = $helper->getNewsDataConfig('name_selector');
+    $emailSelector = $helper->getNewsDataConfig('email_selector');
+    $btnSelector = $helper->getNewsDataConfig('btn_selector');
+  ?>
+
+  <script type="text/javascript">
+    (function(){
+      var nameSelector = '<?php echo $nameSelector; ?>';
+      var emailSelector = '<?php echo $emailSelector; ?>';
+      var clickSelector = '<?php echo $btnSelector; ?>';
+      var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+      var identify = function(email, name) {
+        return dito.identify({
+          id: dito.generateID(email),
+          name: name,
+          email: email,
+          data: {
+            origem_cadastro: 'newsletter'
+          }
+        });
+      };
+
+      if(!clickSelector) return;
+
+      jQuery(document).on('click', clickSelector, function (event) {
+        var email = jQuery(emailSelector).val();
+        var name = jQuery(nameSelector).val();
+
+        if(email == null || email == '' || !filter.test(email) ) {
+          return;
+        }
+
+        identify(email, name);
+      });
+    }());
+  </script>
+<?php endif; ?>
