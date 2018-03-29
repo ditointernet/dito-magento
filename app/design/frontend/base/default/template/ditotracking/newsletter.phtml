@@ -15,6 +15,11 @@
       var filter = /^([a-zA-Z0-9_\-\.+]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
 
       var identify = function(email, name) {
+
+        if(email == null || email == '' || !filter.test(email) ) {
+          return;
+        }
+
         return dito.identify({
           id: dito.generateID(email),
           name: name,
@@ -30,10 +35,6 @@
       jQuery(document).on('click', clickSelector, function (event) {
         var email = jQuery(emailSelector).val();
         var name = jQuery(nameSelector).val();
-
-        if(email == null || email == '' || !filter.test(email) ) {
-          return;
-        }
 
         identify(email, name);
       });
