@@ -2,11 +2,9 @@
 
 <layout version="0.1.0">
   <default>
-    <reference name="header">
-      <reference name="top.container">
-        <block type="core/template" name="ditotracking.install" template="ditotracking/install.phtml" />
-        <block type="core/template" name="ditotracking.alias" template="ditotracking/alias.phtml" />
-      </reference>
+    <reference name="head">
+      <block type="core/template" name="ditotracking.install" template="ditotracking/install.phtml" />
+      <block type="core/template" name="ditotracking.alias" template="ditotracking/alias.phtml" />
     </reference>
     <reference name="content">
       <block type="core/template" name="ditotracking.newsletter" template="ditotracking/newsletter.phtml" />
