@@ -5,5 +5,38 @@
     dito.track({
       action: 'acessou-checkout'
     });
+
+    var identify = function identify(email, name) {
+      return dito.identify({
+        id: dito.generateID(email),
+        name: name,
+        email: email
+      });
+    };
+
+    var validate = function(s) {
+      return s.match(/^([a-zA-Z0-9_\-\.+]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/);
+    };
+
+    var interval = setInterval(function() {
+      var clickSelector = document.querySelector(".btn-proceed-checkout");
+      var emailSelector = document.querySelector("input[name='billing[email]']");
+      var firstNameSelector = document.querySelector("input[name='billing[firstname]']");
+      var lastNameSelector = document.querySelector("input[name='billing[lastname]']");
+
+      if(clickSelector && emailSelector) {
+        clearInterval(interval);
+
+        clickSelector.addEventListener('click', function () {
+          var email = emailSelector.value;
+          var name = firstNameSelector.value + " " + lastNameSelector.value;
+
+          if (validate(email) == null) return;
+
+          identify(email, name);
+        });
+      }
+    }, 1000);
+
   </script>
 <?php endif; ?>
