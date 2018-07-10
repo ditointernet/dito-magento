@@ -4,7 +4,7 @@
   <?php
     $order = Mage::getModel('sales/order')->load(Mage::getSingleton('checkout/session')->getLastOrderId());
     $payment = $order->getPayment();
-    $items = $order->getAllItems();
+    $items = $order->getAllVisibleItems();
 
     $ccType = $payment->getCcType();
     $ccTypes = Mage::getSingleton('payment/config')->getCcTypes();

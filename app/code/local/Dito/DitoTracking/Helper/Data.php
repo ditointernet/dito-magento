@@ -43,6 +43,7 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
         $address = reset($addresses);
         if(isset($address)){
           $city = $address->getCity();
+          $region = $address->getRegion();
           $phoneFromAddress = $address->getTelephone();
         }
       }
@@ -64,7 +65,8 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
         'data' => array(
           'user_id' => $customer->getId(),
           'cpf' => $customer->getData($this->getUserDataConfig('user_config_cpf')),
-          'telefone' => $phone
+          'telefone' => $phone,
+          'estado' => $region
         )
       );
     }
