@@ -52,7 +52,7 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract {
       $email = preg_replace('/\s*/', '', strtolower($customer->getEmail()));
 
       if($customer->getDob()){
-        $birthday = split(' ', $customer->getDob())[0];
+        $birthday = explode(' ', $customer->getDob())[0];
       }
 
       $user = Array(
