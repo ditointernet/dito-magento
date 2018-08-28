@@ -78,4 +78,10 @@
       <block type="core/template" name="ditotracking.checkout.index" template="ditotracking/checkout/onepage/success.phtml" />
     </reference>
   </mundipagg_standard_success>
+
+  <paghiper_payment_redirect>
+    <reference name="content">
+      <block type="core/template" name="ditotracking.checkout.index" template="ditotracking/checkout/onepage/success.phtml" />
+    </reference>
+  </paghiper_payment_redirect>
 </layout>
