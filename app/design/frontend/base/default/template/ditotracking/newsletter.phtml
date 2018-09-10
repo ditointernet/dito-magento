@@ -1,7 +1,7 @@
 <?php $helper = Mage::helper('ditotracking'); ?>
 
 <?php if($helper->getNewsEnabled()): ?>
-  <?php 
+  <?php
     $nameSelector = $helper->getNewsDataConfig('name_selector');
     $emailSelector = $helper->getNewsDataConfig('email_selector');
     $btnSelector = $helper->getNewsDataConfig('btn_selector');
@@ -32,7 +32,7 @@
 
       if(!clickSelector) return;
 
-      jQuery(document).on('click', clickSelector, function (event) {
+      jQuery(clickSelector).click(function (event) {
         var email = jQuery(emailSelector).val();
         var name = jQuery(nameSelector).val();
 
