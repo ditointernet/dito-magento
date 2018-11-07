@@ -1,9 +1,12 @@
-<?php $helper = Mage::helper('ditotracking'); ?>
+<?php 
+  $config = Mage::helper('ditotracking/config');
+  $dataHelper = Mage::helper('ditotracking/data');
+?>
 
-<?php if($helper->getTrackStatus('catalog_product_view')): ?>
+<?php if($config->getTrackStatus('catalog_product_view')): ?>
   <?php
     $product = Mage::registry('current_product');
-    $data = $helper->getProductTrackingObject($product);
+    $data = $dataHelper->getProductTrackingObject($product);
   ?>
 
   <script type="text/javascript">

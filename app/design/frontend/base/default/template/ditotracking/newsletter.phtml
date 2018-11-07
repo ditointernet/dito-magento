@@ -1,6 +1,6 @@
-<?php $helper = Mage::helper('ditotracking'); ?>
+<?php $helper = Mage::helper('ditotracking/config'); ?>
 
-<?php if($helper->getNewsEnabled()): ?>
+<?php if($helper->isNewsEnabled()): ?>
   <?php 
     $nameSelector = $helper->getNewsDataConfig('name_selector');
     $emailSelector = $helper->getNewsDataConfig('email_selector');

@@ -1,8 +1,10 @@
 <?php
-  $helper = Mage::helper('ditotracking');
-  $customer = Mage::getSingleton('customer/session')->getCustomer();
+  $helper = Mage::helper('ditotracking/data');
+  $customer = $helper->getUserIdentifyObject();
 ?>
 
-<?php if(isset($customer) && $customer->getId()): ?>
-  dito.identify(<?php echo json_encode($helper->getUserIdentifyObject($customer)) ?>);
+<?php if(isset($customer)): ?>
+  <script type="text/javascript">
+    dito.identify(<?php echo json_encode($customer) ?>);
+  </script>
 <?php endif; ?>

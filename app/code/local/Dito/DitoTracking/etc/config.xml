@@ -13,6 +13,11 @@
         <class>Dito_DitoTracking_Helper</class>
       </ditotracking>
     </helpers>
+    <models>
+      <ditotracking>
+        <class>Dito_DitoTracking_Model</class>
+      </ditotracking>
+    </models>
 
     <events>
       <controller_action_predispatch_checkout_cart_add>
@@ -23,6 +28,16 @@
           </Dito_DitoTracking_log_cart_add>
         </observers>
       </controller_action_predispatch_checkout_cart_add>
+    </events>
+    <events>
+      <sales_order_place_after>
+        <observers>
+          <Dito_DitoTracking_order_observer>
+            <class>Dito_DitoTracking_Model_Observer</class>
+            <method>export_new_order</method>
+          </Dito_DitoTracking_order_observer>
+        </observers>
+      </sales_order_place_after>
     </events>
   </global>
 

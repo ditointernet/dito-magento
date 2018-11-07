@@ -4,7 +4,6 @@
   <default>
     <reference name="head">
       <block type="core/template" name="ditotracking.install" template="ditotracking/install.phtml" />
-      <block type="core/template" name="ditotracking.alias" template="ditotracking/alias.phtml" />
     </reference>
     <reference name="content">
       <block type="core/template" name="ditotracking.newsletter" template="ditotracking/newsletter.phtml" />
@@ -53,12 +52,6 @@
     </reference>
   </checkout_onepage_index>
 
-  <checkout_onepage_success>
-    <reference name="content">
-      <block type="core/template" name="ditotracking.checkout.success" template="ditotracking/checkout/onepage/success.phtml" />
-    </reference>
-  </checkout_onepage_success>
-
   <!-- ONE PAGE CHECKOUT  -->
   <opc_index_index>
     <reference name="content">
@@ -72,16 +65,4 @@
       <block type="core/template" name="ditotracking.checkout.index" template="ditotracking/checkout/onepage/index.phtml" />
     </reference>
   </onestepcheckout_index_index>
-
-  <mundipagg_standard_success>
-    <reference name="content">
-      <block type="core/template" name="ditotracking.checkout.index" template="ditotracking/checkout/onepage/success.phtml" />
-    </reference>
-  </mundipagg_standard_success>
-
-  <paghiper_payment_redirect>
-    <reference name="content">
-      <block type="core/template" name="ditotracking.checkout.index" template="ditotracking/checkout/onepage/success.phtml" />
-    </reference>
-  </paghiper_payment_redirect>
 </layout>

@@ -1,4 +1,7 @@
-<?php $helper = Mage::helper('ditotracking'); ?>
+<?php 
+  $config = Mage::helper('ditotracking/config'); 
+  $dataHelper = Mage::helper('ditotracking/data'); 
+?>
 
 <script>
   (function(d,e,id){
@@ -12,27 +15,29 @@
   })(document,'script','dito-jssdk');
 </script>
 
-<?php if($helper->getDitoEnabled()): ?>
+<?php if($config->isDitoEnabled()): ?>
   <input type="hidden" id="_dito-root-path" value="<?php echo Mage::getUrl(); ?>">
 
-  <script>
+  <script type="text/javascript">
     dito.init({
-      apiKey: '<?php echo $helper->getApiKey(); ?>',
+      apiKey: '<?php echo $config->getApiKey(); ?>',
       session: true
     });
+    
+    <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+      <?php if($config->getCacheStrategy()): ?>
+        jQuery.get(jQuery('#_dito-root-path').val() + 'ditotracking/index/identify', function(response){
+          try {
+            eval(response);
+          }
+          catch(e) {}
+        });
+      <?php else: ?>
+        <?php $customer = $dataHelper->getUserIdentifyObject(); ?>
 
-    <?php if($helper->getCacheStrategy()): ?>
-      jQuery.get(jQuery('#_dito-root-path').val() + 'ditotracking/index/identify', function(response){
-        try {
-          eval(response);
-        }
-        catch(e) {}
-      });
-    <?php else: ?>
-      <?php $customer = Mage::getSingleton('customer/session')->getCustomer(); ?>
-
-      <?php if(isset($customer) && $customer->getId()): ?>
-        dito.identify(<?php echo json_encode($helper->getUserIdentifyObject($customer)) ?>);
+        <?php if(!empty($customer)): ?>
+          dito.identify(<?php echo json_encode($customer) ?>);
+        <?php endif; ?>
       <?php endif; ?>
     <?php endif; ?>
   </script>
