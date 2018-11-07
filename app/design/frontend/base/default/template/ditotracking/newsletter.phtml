@@ -32,7 +32,7 @@
 
       if(!clickSelector) return;
 
-      jQuery(document).on('click', clickSelector, function (event) {
+      jQuery(clickSelector).click(function (event) {
         var email = jQuery(emailSelector).val();
         var name = jQuery(nameSelector).val();
 
