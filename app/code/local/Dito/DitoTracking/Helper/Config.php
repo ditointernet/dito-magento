@@ -56,9 +56,16 @@ class Dito_DitoTracking_Helper_Config extends Mage_Core_Helper_Abstract
   }
 
   /**
-   * @return string
+   * @return boolean
    */
   public function getIdType($store = null) {
-    return Mage::getStoreConfig('ditotracking_options/user_config/user_config_id_type', $store);
+    return (boolean) Mage::getStoreConfig('ditotracking_options/user_config/user_config_id_type', $store);
+  }
+
+  /**
+   * @return boolean
+   */
+  public function sendRevenue($store = null) {
+    return (boolean) Mage::getStoreConfig('ditotracking_options/track_config/send_revenue', $store);
   }
 }

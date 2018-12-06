@@ -28,11 +28,11 @@ class Dito_DitoTracking_Model_Observer
     $payment = $order->getPayment();
 
     $orderdata['id_compra'] = $order->getIncrementId();
-    $orderdata['total'] = floatval($order->getGrandTotal());
-    $orderdata['subtotal'] = floatval($order->getSubtotal());
-    $orderdata['total_desconto'] = floatval($order->getDiscountAmount());
-    $orderdata['total_frete'] = floatval($order->getShippingAmount());
-    $orderdata['tipo_frete'] = floatval($order->getShippingMethod());
+    $orderdata['total'] = round(floatval($order->getGrandTotal()), 2);
+    $orderdata['subtotal'] = round(floatval($order->getSubtotal()), 2);
+    $orderdata['total_desconto'] = round(floatval($order->getDiscountAmount()), 2);
+    $orderdata['total_frete'] = round(floatval($order->getShippingAmount()), 2);
+    $orderdata['tipo_frete'] = round(floatval($order->getShippingMethod()), 2);
     $orderdata['quantidade_produtos'] = floatval($order->getTotalQtyOrdered());
     $orderdata['metodo_pagamento'] = $payment->getMethod();
 
@@ -74,6 +74,15 @@ class Dito_DitoTracking_Model_Observer
       $app_key = $this->config()->getApiKey();
       $app_secret = $this->config()->getAppSecret();
       $reference = $this->helper()->getUserId($customer);
+      $action = 'comprou';
+      $revenue = $orderData['total'];
+      $send_revenue = $this->config()->sendRevenue();
+
+      if(empty($send_revenue)) {
+        $action = 'fez-pedido';
+        $revenue = NULL;
+      }
+
       $dito = new Dito_DitoTracking_Model_Utilities_DitoIns($app_key, $app_secret, $reference);
 
       $dito->setCallbacks(function($obj) {
@@ -83,8 +92,8 @@ class Dito_DitoTracking_Model_Observer
       });
       $message_id = sha1($this->config()->getApiKey() . $orderData['id_compra']);
       $event = array(
-        'action' => 'comprou',
-        'revenue' => $orderData['total'],
+        'action' => $action,
+        'revenue' => $revenue,
         'data' => json_encode($orderData)
       );
 
@@ -108,6 +117,13 @@ class Dito_DitoTracking_Model_Observer
       $app_key = $this->config()->getApiKey();
       $app_secret = $this->config()->getAppSecret();
       $reference = $this->helper()->getUserId($customer);
+      $action = 'comprou-produto';
+      $send_revenue = $this->config()->sendRevenue();
+
+      if(empty($send_revenue)) {
+        $action = 'fez-pedido-produto';
+      }
+
       $dito = new Dito_DitoTracking_Model_Utilities_DitoIns($app_key, $app_secret, $reference);
 
       $dito->setCallbacks(function($obj) {
@@ -119,7 +135,7 @@ class Dito_DitoTracking_Model_Observer
         $message_id = sha1($orderData['id_compra'] . $product['id_produto']);
         $product['id_compra'] = $orderData['id_compra'];
         $event = array(
-          'action' => 'comprou-produto',
+          'action' => $action,
           'data' => json_encode($product)
         );
 

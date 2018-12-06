@@ -14,15 +14,18 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
     if($this->helper()->getIdType()) {
       $cpf = $customer->getData($this->helper()->getUserDataConfig('user_config_cpf'));
 
-      if(!$cpf) {
+      if(empty($cpf)) {
         return;
       }
+      
       $id = $this->limpa_cpf($cpf);
     } else {
       $email = $customer->getEmail();
-      if(!$email) {
+
+      if(empty($email)) {
         return;
       }
+
       $id = sha1($this->validate_email($customer->getEmail()));
     }
 

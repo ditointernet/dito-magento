@@ -12,7 +12,7 @@ class Dito_DitoTracking_Model_Utilities_DitoIns
   /** @var string  Event path. def https://events.plataformasocial.com.br/users/ */
   private $event_url = 'https://events.plataformasocial.com.br/users/';
 
-  /** @var string  Login path. def https://events.plataformasocial.com.br/users/ */
+  /** @var string  Login path. def https://login.plataformasocial.com.br/users/portal/ */
   private $login_url = 'https://login.plataformasocial.com.br/users/portal/';
 
   /** @var string  User id. */
