@@ -53,6 +53,7 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
       $birthday = '';
       $phoneFromConfig = $this->helper()->getUserDataConfig('user_config_cellphone');
       $phone = '';
+      $groupCode = '';
       $id = $this->getUserId($customer);
       $cpfFromConfig = $this->helper()->getUserDataConfig('user_config_cpf');
 
@@ -71,6 +72,17 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
         $birthday = explode(' ', $customer->getDob())[0];
       }
 
+      if($customer->getDob()){
+        $birthday = explode(' ', $customer->getDob())[0];
+      }
+
+      $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
+
+      if(isset($groupId)) {
+        $group = Mage::getModel('customer/group')->load($groupId);
+        $groupCode = $group->getCode();
+      }
+
       if($id) {
         $user = array(
           'id' => $id,
@@ -83,7 +95,8 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
             'user_id' => $customer->getId(),
             'cpf' => $cpf,
             'telefone' => $phone,
-            'estado' => $region
+            'estado' => $region,
+            'grupo' => $groupCode
           )
         );
       }
