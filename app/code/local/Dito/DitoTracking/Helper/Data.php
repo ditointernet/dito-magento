@@ -54,6 +54,7 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
       $phoneFromConfig = $this->helper()->getUserDataConfig('user_config_cellphone');
       $phone = '';
       $groupCode = '';
+      $region = '';
       $id = $this->getUserId($customer);
       $cpfFromConfig = $this->helper()->getUserDataConfig('user_config_cpf');
 
