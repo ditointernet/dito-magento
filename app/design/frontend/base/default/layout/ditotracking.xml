@@ -10,6 +10,12 @@
     </reference>
   </default>
 
+  <cms_index_index>
+    <reference name="content">
+      <block type="core/template" name="ditotracking.home" template="ditotracking/home.phtml" />
+    </reference>
+  </cms_index_index>
+
   <catalogsearch_result_index>
     <reference name="content">
       <block type="core/template" name="ditotracking.search" template="ditotracking/catalogsearch/result.phtml" />
@@ -27,6 +33,12 @@
       <block type="core/template" name="ditotracking.search.advanced.result" template="ditotracking/catalogsearch/advanced/result.phtml" />
     </reference>
   </catalogsearch_advanced_result>
+
+  <searchanise_result_index>
+    <reference name="content">
+      <block type="core/template" name="ditotracking.search" template="ditotracking/catalogsearch/result.phtml" />
+    </reference>
+  </searchanise_result_index>
 
   <catalog_category_view>
     <reference name="content">
