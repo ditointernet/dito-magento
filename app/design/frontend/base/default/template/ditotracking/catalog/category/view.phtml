@@ -10,9 +10,15 @@
   ?>
 
   <script type="text/javascript">
-    dito.track({
-      action: 'acessou-categoria',
-      data: <?php echo json_encode($data); ?>
-    });
+    <?php if($data['nome_categoria'] == 'Contato') { ?>
+      dito.track({
+        action: 'acessou-contato'
+      });
+    <?php } else { ?>
+      dito.track({
+        action: 'acessou-categoria',
+        data: <?php echo json_encode($data); ?>
+      });
+    <?php } ?>
   </script>
 <?php endif; ?>
