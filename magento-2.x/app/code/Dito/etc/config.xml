@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <aplication>
+            <Magento2module>
+                <dito_enabled>1</dito_enabled>
+                <app_key><![CDATA[INSERT_APP_KEY_HERE]]></app_key>
+                <app_secret><![CDATA[INSERT_APP_SECRET_HERE]]></app_secret>
+            </Magento2module>
+        </aplication>
+        <users>
+            <Magento2module>
+                <user_id>1</user_id>
+                <user_config_cpf><![CDATA[taxvat]]></user_config_cpf>
+                <user_config_cellphone><![CDATA[INSERT_APP_SECRET_HERE]]></user_config_cellphone>
+            </Magento2module>
+        </users>
+    </default>
+</config>
