@@ -1,7 +1,0 @@
-<?php $helper = Mage::helper('ditotracking/config'); ?>
-
-<?php if($helper->isDitoEnabled() && $helper->getTrackStatus('blog_index')): ?>
-  <script type="text/javascript">
-    dito.track("acessou-blog");
-  </script>
-<?php endif; ?>
