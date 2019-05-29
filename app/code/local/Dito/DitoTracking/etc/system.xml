@@ -171,7 +171,7 @@
               <show_in_default>1</show_in_default>
               <show_in_website>1</show_in_website>
               <show_in_store>1</show_in_store>
-            </blog_index_l>
+            </blog_index>
 
             <send_revenue>
               <label>Enviar compra</label>
