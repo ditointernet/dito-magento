@@ -73,10 +73,6 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
         $birthday = explode(' ', $customer->getDob())[0];
       }
 
-      if($customer->getDob()){
-        $birthday = explode(' ', $customer->getDob())[0];
-      }
-
       $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
 
       if(isset($groupId)) {
