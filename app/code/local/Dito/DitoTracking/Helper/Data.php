@@ -10,6 +10,7 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
 
   public function getUserId($customer) {
     $id = '';
+    $customer = ($customer) ? $customer : Mage::getSingleton('customer/session')->getCustomer();
 
     if($this->helper()->getIdType()) {
       $cpf = $customer->getData($this->helper()->getUserDataConfig('user_config_cpf'));
@@ -43,63 +44,67 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
   }
 
   public function getUserIdentifyObject($customer = null) {
-    $customer = ($customer) ? $customer : Mage::getSingleton('customer/session')->getCustomer();
-
     $user = array();
 
-    if(isset($customer) && $customer->getId()) {
-      $addresses = $customer->getAddresses();
-      $city = '';
-      $birthday = '';
-      $phoneFromConfig = $this->helper()->getUserDataConfig('user_config_cellphone');
-      $phone = '';
-      $groupCode = '';
-      $region = '';
-      $id = $this->getUserId($customer);
-      $cpfFromConfig = $this->helper()->getUserDataConfig('user_config_cpf');
+    try {
+      $customer = ($customer) ? $customer : Mage::getSingleton('customer/session')->getCustomer();
 
-      if(count($addresses) >= 1){
-        $address = reset($addresses);
-        if(isset($address)){
-          $city = $address->getCity();
-          $region = $address->getRegion();
+      if(isset($customer) && $customer->getId()) {
+        $addresses = $customer->getAddresses();
+        $city = '';
+        $birthday = '';
+        $phoneFromConfig = $this->helper()->getUserDataConfig('user_config_cellphone');
+        $phone = '';
+        $groupCode = '';
+        $region = '';
+        $id = $this->getUserId($customer);
+        $cpfFromConfig = $this->helper()->getUserDataConfig('user_config_cpf');
+
+        if(count($addresses) >= 1){
+          $address = reset($addresses);
+          if(isset($address)){
+            $city = $address->getCity();
+            $region = $address->getRegion();
+          }
+        }
+        $cpf = empty($cpfFromConfig) ? '' : $customer->getData($cpfFromConfig);
+        $phone = empty($phoneFromConfig) ? '' : $customer->getData($phoneFromConfig);
+        $email = $this->validate_email($customer->getEmail());
+
+        if($customer->getDob()){
+          $birthday = explode(' ', $customer->getDob())[0];
+        }
+
+        $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
+
+        if(isset($groupId)) {
+          $group = Mage::getModel('customer/group')->load($groupId);
+          $groupCode = $group->getCode();
+        }
+
+        if($id) {
+          $user = array(
+            'id' => $id,
+            'email' => $email,
+            'name' => $customer->getName(),
+            'birthday' => $birthday,
+            'gender' => array('', 'male', 'female')[$customer->getGender()],
+            'location' => $city,
+            'data' => array(
+              'user_id' => $customer->getId(),
+              'cpf' => $cpf,
+              'telefone' => $phone,
+              'estado' => $region,
+              'grupo' => $groupCode
+            )
+          );
         }
       }
-      $cpf = empty($cpfFromConfig) ? '' : $customer->getData($cpfFromConfig);
-      $phone = empty($phoneFromConfig) ? '' : $customer->getData($phoneFromConfig);
-      $email = $this->validate_email($customer->getEmail());
 
-      if($customer->getDob()){
-        $birthday = explode(' ', $customer->getDob())[0];
-      }
-
-      $groupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
-
-      if(isset($groupId)) {
-        $group = Mage::getModel('customer/group')->load($groupId);
-        $groupCode = $group->getCode();
-      }
-
-      if($id) {
-        $user = array(
-          'id' => $id,
-          'email' => $email,
-          'name' => $customer->getName(),
-          'birthday' => $birthday,
-          'gender' => array('', 'male', 'female')[$customer->getGender()],
-          'location' => $city,
-          'data' => array(
-            'user_id' => $customer->getId(),
-            'cpf' => $cpf,
-            'telefone' => $phone,
-            'estado' => $region,
-            'grupo' => $groupCode
-          )
-        );
-      }
+      return $user;
+    } catch (\Throwable $th) {
+      return $user;
     }
-
-    return $user;
   }
 
   public function getProductTrackingObject($product) {

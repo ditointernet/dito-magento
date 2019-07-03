@@ -167,13 +167,24 @@
               <label>Blog</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
-              <sort_order>9</sort_order>
+              <sort_order>8</sort_order>
               <show_in_default>1</show_in_default>
               <show_in_website>1</show_in_website>
               <show_in_store>1</show_in_store>
             </blog_index>
 
-            <send_revenue>
+            <order_status>
+              <label>Status para envio da compra</label>
+              <comment>Escolha o status que indica compra confirmada. Default: Pagamento Confirmado (processing)</comment>
+              <frontend_type>select</frontend_type>
+              <source_model>ditotracking/system_config_source_view</source_model>
+              <sort_order>9</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </order_status>
+
+            <!-- <send_revenue>
               <label>Enviar compra</label>
               <comment>Marcando como "NÃO", os eventos de "comprou" e "comprou-produto" chegarão na Dito como "fez-pedido" e "fez-pedido-produto" e sem revenue.</comment>
               <frontend_type>select</frontend_type>
@@ -182,7 +193,7 @@
               <show_in_default>1</show_in_default>
               <show_in_website>1</show_in_website>
               <show_in_store>1</show_in_store>
-            </send_revenue>
+            </send_revenue> -->
           </fields>
         </track_config>
 

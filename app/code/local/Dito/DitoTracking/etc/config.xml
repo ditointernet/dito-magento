@@ -37,6 +37,15 @@
           </Dito_DitoTracking_order_observer>
         </observers>
       </sales_order_place_after>
+
+      <sales_order_save_after>
+        <observers>
+          <Dito_DitoTracking_order_observer>
+            <class>Dito_DitoTracking_Model_Observer</class>
+            <method>check_order_status</method>
+          </Dito_DitoTracking_order_observer>
+        </observers>
+      </sales_order_save_after>
     </events>
   </global>
 
@@ -59,6 +68,14 @@
       </ditotracking>
     </routers>
   </frontend>
+
+  <default>
+    <ditotracking_options>
+      <track_config>                
+        <order_status>processing</order_status>   
+      </track_config>      
+    </ditotracking_options>
+  </default>
 
   <adminhtml>
     <acl>

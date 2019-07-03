@@ -68,4 +68,11 @@ class Dito_DitoTracking_Helper_Config extends Mage_Core_Helper_Abstract
   public function sendRevenue($store = null) {
     return (boolean) Mage::getStoreConfig('ditotracking_options/track_config/send_revenue', $store);
   }
+
+  /**
+   * @return string
+   */
+  public function getOrderStatus($store = null) {
+    return (string) Mage::getStoreConfig('ditotracking_options/track_config/order_status', $store);
+  }
 }

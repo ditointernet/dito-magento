@@ -85,16 +85,19 @@ class Dito_DitoTracking_Model_Utilities_DitoIns
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $this->preparedpack);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 20);
     $data = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $report = curl_getinfo($ch);
     curl_close($ch);
+    
     $this->lastRequest = array("code" => $httpcode, "response" => $data, "info" => $report, 'fields' => $this->preparedpack);
-    if (($httpcode !== 200) && ($this->errorHandle !== null)) {
+
+    if (($httpcode >= 400) && ($this->errorHandle !== null)) {
+      error_log("DITOPHPSDK ERROR REQUEST:" . json_encode($this->lastRequest));
       call_user_func_array($this->errorHandle, array($this));
-    } elseif (($httpcode === 200) && ($this->readyHandle !== null)) {
+    } else {
       call_user_func_array($this->readyHandle, array($this));
     }
   }

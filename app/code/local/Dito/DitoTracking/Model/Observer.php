@@ -65,7 +65,7 @@ class Dito_DitoTracking_Model_Observer
     return $productsData;
   }
 
-  private function sendOrderDataToServer($orderData, $customer) {
+  private function sendOrderDataToServer($orderData, $customer, $action = 'fez-pedido') {
     if (!$this->isEnabled()) {
       return;
     }
@@ -74,18 +74,16 @@ class Dito_DitoTracking_Model_Observer
       $app_key = $this->config()->getApiKey();
       $app_secret = $this->config()->getAppSecret();
       $reference = $this->helper()->getUserId($customer);
-      $action = 'comprou';
-      $revenue = $orderData['total'];
-      $send_revenue = $this->config()->sendRevenue();
-
-      if(empty($send_revenue)) {
-        $action = 'fez-pedido';
-        $revenue = NULL;
+      $revenue = NULL;
+      
+      if ($action == 'comprou') {
+        $revenue = $orderData['total'];
       }
 
       $dito = new Dito_DitoTracking_Model_Utilities_DitoIns($app_key, $app_secret, $reference);
 
       $dito->setCallbacks(function($obj) {
+        error_log("DITOPHPSDK ERROR - wrong request:" . json_encode($obj->getLastRequest()));
         Mage::log("DITOPHPSDK ERROR - wrong request:" . json_encode($obj->getLastRequest()));
       }, function() {
 
@@ -102,13 +100,14 @@ class Dito_DitoTracking_Model_Observer
         $event
       )->send();
     } catch(Exception $e) {
+      error_log("DITOPHPSDK ERROR:" . $e->getMessage() . ' more :' . json_encode($e));
       Mage::log("DITOPHPSDK ERROR:" . $e->getMessage() . ' more :' . json_encode($e));
     }
 
     return json_encode($dito->getLastRequest());
   }
 
-  private function sendProductsDataToServer($orderData, $productsData, $customer) {
+  private function sendProductsDataToServer($orderData, $productsData, $customer, $action = 'fez-pedido-produto') {
     if (!$this->isEnabled()) {
       return;
     }
@@ -117,16 +116,11 @@ class Dito_DitoTracking_Model_Observer
       $app_key = $this->config()->getApiKey();
       $app_secret = $this->config()->getAppSecret();
       $reference = $this->helper()->getUserId($customer);
-      $action = 'comprou-produto';
-      $send_revenue = $this->config()->sendRevenue();
-
-      if(empty($send_revenue)) {
-        $action = 'fez-pedido-produto';
-      }
 
       $dito = new Dito_DitoTracking_Model_Utilities_DitoIns($app_key, $app_secret, $reference);
 
       $dito->setCallbacks(function($obj) {
+        error_log("DITOPHPSDK ERROR - wrong request:" . json_encode($obj->getLastRequest()));
         Mage::log("DITOPHPSDK ERROR - wrong request:" . json_encode($obj->getLastRequest()));
       }, function() {
 
@@ -146,6 +140,7 @@ class Dito_DitoTracking_Model_Observer
       }
       
     } catch(Exception $e) {
+      error_log("DITOPHPSDK ERROR:" . $e->getMessage() . ' more :' . json_encode($e));
       Mage::log("DITOPHPSDK ERROR:" . $e->getMessage() . ' more :' . json_encode($e));
     }
 
@@ -164,6 +159,7 @@ class Dito_DitoTracking_Model_Observer
       $dito = new Dito_DitoTracking_Model_Utilities_DitoIns($app_key, $app_secret, $reference);
 
       $dito->setCallbacks(function($obj) {
+        error_log("DITOPHPSDK ERROR - wrong request:" . json_encode($obj->getLastRequest()));
         Mage::log("DITOPHPSDK ERROR - wrong request:" . json_encode($obj->getLastRequest()));
       }, function() {
 
@@ -174,6 +170,7 @@ class Dito_DitoTracking_Model_Observer
       )->send();
       
     } catch(Exception $e) {
+      error_log("DITOPHPSDK ERROR:" . $e->getMessage() . ' more :' . json_encode($e));
       Mage::log("DITOPHPSDK ERROR:" . $e->getMessage() . ' more :' . json_encode($e));
     }
 
@@ -190,6 +187,23 @@ class Dito_DitoTracking_Model_Observer
     $this->sendIdentifyToServer($orderData[2], $orderData[3]);
     $this->sendOrderDataToServer($orderData[0], $orderData[3]);
     $this->sendProductsDataToServer($orderData[0], $orderData[1], $orderData[3]);
+
+    return $this;
+  }
+
+  public function check_order_status($observer)
+  {
+    $order = $observer->getEvent()->getOrder();
+    $orderStatus = $order->getStatus();
+    $statusChoosed = $this->config()->getOrderStatus();
+
+    if ($orderStatus == $statusChoosed)
+    {
+      $orderData = $this->getOrderData($order);
+      $this->sendIdentifyToServer($orderData[2], $orderData[3]);
+      $this->sendOrderDataToServer($orderData[0], $orderData[3], 'comprou');
+      $this->sendProductsDataToServer($orderData[0], $orderData[1], $orderData[3], 'comprou-produto');
+    }
 
     return $this;
   }
