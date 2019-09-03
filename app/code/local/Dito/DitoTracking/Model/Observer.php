@@ -88,7 +88,7 @@ class Dito_DitoTracking_Model_Observer
       }, function() {
 
       });
-      $message_id = sha1($this->config()->getApiKey() . $orderData['id_compra']);
+      $message_id = sha1($app_key . $orderData['id_compra'] . time());
       $event = array(
         'action' => $action,
         'revenue' => $revenue,
@@ -126,7 +126,7 @@ class Dito_DitoTracking_Model_Observer
 
       });
       foreach($productsData as $product) {
-        $message_id = sha1($orderData['id_compra'] . $product['id_produto']);
+        $message_id = sha1($app_key . $orderData['id_compra'] . $product['id_produto'] . time());
         $product['id_compra'] = $orderData['id_compra'];
         $event = array(
           'action' => $action,
@@ -193,6 +193,10 @@ class Dito_DitoTracking_Model_Observer
 
   public function check_order_status($observer)
   {
+    if (!$this->isEnabled() || !$this->sendRevenue()) {
+      return;
+    }
+
     $order = $observer->getEvent()->getOrder();
     $orderStatus = $order->getStatus();
     $statusChoosed = $this->config()->getOrderStatus();
@@ -212,6 +216,12 @@ class Dito_DitoTracking_Model_Observer
     $isEnabled = $this->config()->isDitoEnabled();
 
     return $isEnabled;
+  }
+
+  private function sendRevenue() {
+    $sendRevenue = $this->config()->sendRevenue();
+
+    return $sendRevenue;
   }
 
   private function config() {
