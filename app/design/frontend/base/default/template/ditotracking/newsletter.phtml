@@ -32,12 +32,19 @@
 
       if(!clickSelector) return;
 
-      jQuery(clickSelector).click(function (event) {
-        var email = jQuery(emailSelector).val();
-        var name = jQuery(nameSelector).val();
+      jQuery(window).load(function() {
+        jQuery(clickSelector).click(function (event) {
+          var email = jQuery(emailSelector).val();
+          var name = jQuery(nameSelector).val();
 
-        identify(email, name);
+          var user = identify(email, name);
+          if (user) {
+            dito.track('cadastrou-newsletter')
+          }
+
+        });
       });
+      
     }());
   </script>
 <?php endif; ?>
