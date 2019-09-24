@@ -36,12 +36,8 @@
         jQuery(clickSelector).click(function (event) {
           var email = jQuery(emailSelector).val();
           var name = jQuery(nameSelector).val();
-
-          var user = identify(email, name);
-          if (user) {
-            dito.track('cadastrou-newsletter')
-          }
-
+          identify(email, name);
+          dito.track('cadastrou-newsletter');
         });
       });
       
