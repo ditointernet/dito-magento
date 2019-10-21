@@ -66,6 +66,10 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
         }
       }
       $cpf = empty($cpfFromConfig) ? '' : $customer->getData($cpfFromConfig);
+      Mage::log("DITOPHPSQL CUSTOMER: " .$customer)
+      Mage::log("DITOPHPSDK PHONE FROM CUSTOMER:" .$customer->getData($cpfFromConfig));
+      Mage::log("DITOPHPSDK PHONE FROM CONFIG:" .$phoneFromConfig);
+      
       $phone = empty($phoneFromConfig) ? '' : $customer->getData($phoneFromConfig);
       $email = $this->validate_email($customer->getEmail());
 
@@ -96,6 +100,10 @@ class Dito_DitoTracking_Helper_Data extends Mage_Core_Helper_Abstract
             'grupo' => $groupCode
           )
         );
+
+        $user = array_filter($user);
+        $user['data'] = array_filter($user['data']);
+        
       }
     }
 
